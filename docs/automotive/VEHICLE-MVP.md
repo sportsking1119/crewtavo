@@ -1,6 +1,6 @@
 # First Implementation: Customer-Linked Vehicle Management
 
-**Status:** Proposed specification, not implemented. Validate actual upstream tables, role rules, API conventions, migrations and existing UX components before coding.
+**Status:** Initial customer-linked vehicle slice implemented on draft PR #1, unverified by CI/browser. This remains the acceptance specification. NHTSA VIN decode, vehicle service history, and broader repair-order integration are deferred.
 
 ## User stories
 
@@ -54,14 +54,14 @@ Consider a separate ownership-history association when transferring a vehicle be
 
 ## Acceptance criteria
 
-- [ ] A permitted user can create and edit vehicle records using existing UI components.
+- [ ] A permitted user can create and edit vehicle records using existing UI components. (Code committed, awaiting runtime verification.)
 - [ ] Duplicate form submissions do not create two records when retries or slow connections occur.
 - [ ] Invalid input yields helpful validation; no blank screen or unhandled error.
 - [ ] VIN decode outage does not prevent manual vehicle registration.
 - [ ] Search and list are strictly tenant scoped.
 - [ ] Foreign-key manipulation and revoked-role access are rejected by both API and DB policies.
 - [ ] Customer portal visibility is explicitly tested; do not automatically expose records.
-- [ ] Database migration upgrades an existing fixture without changing unrelated records.
+- [ ] Database migration upgrades an existing fixture without changing unrelated records. (Migration committed, test not yet run.)
 - [ ] Existing customer, jobs, estimates, auth, invoices and payments tests continue passing.
 - [ ] Test on phone and desktop; check accessibility and interruption recovery.
 - [ ] Build and CI results recorded against the exact final commit SHA.
