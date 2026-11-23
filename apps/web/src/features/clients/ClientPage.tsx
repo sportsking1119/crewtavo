@@ -35,6 +35,8 @@ import styles from "./clients.module.css";
 import { AddContact, ContactsCard, useClientContacts } from "./ContactsCard";
 import { PropertyDialog, type AccessRow, type PropertyRow } from "./PropertyDialog";
 import { PropertyEquipment } from "./PropertyEquipment";
+import { ClientVehicles } from "./ClientVehicles";
+import { clientHasVehicles } from "./vehicleData";
 import { RESET_LINKS_BODY, RESET_LINKS_LABEL, RESET_LINKS_NOTE, resetLinksPath } from "./resetLinks";
 import { askedNot, sendWay } from "./sendWays";
 import { MergeClientsDialog } from "./MergeClientsDialog";
@@ -241,6 +243,18 @@ export function ClientPage() {
   const deleteClient = async () => {
     if (hasWork) {
       if (await confirm({ title: `Archive ${c.display_name} instead?`, body: "This client has quotes, jobs or invoices, so deleting would erase that history. Archiving hides them from lists and keeps the records.", confirmLabel: "Archive client" })) update.mutate({ status: "archived" });
+      return;
+    }
+    // Preserve even archived vehicle records. If the lookup fails, block deletion.
+    let linkedVehicles = false;
+    try {
+      linkedVehicles = await clientHasVehicles(session.company.id, id);
+    } catch {
+      toast.error("Could not verify the customer's vehicle history. Try again before deleting.");
+      return;
+    }
+    if (linkedVehicles) {
+      if (await confirm({ title: `Archive ${c.display_name} instead?`, body: "This customer has registered vehicles. Archiving keeps those records rather than deleting them.", confirmLabel: "Archive client" })) update.mutate({ status: "archived" });
       return;
     }
     if (await confirm({ title: `Delete ${c.display_name}?`, body: "Their properties, requests, notes and contacts are deleted too. This can't be undone.", confirmLabel: "Delete client", danger: true })) remove.mutate();
@@ -469,6 +483,7 @@ export function ClientPage() {
           </>
         }
       >
+        <ClientVehicles clientId={c.id} />
         <Section
           title="Properties"
           count={c.properties.length || undefined}
