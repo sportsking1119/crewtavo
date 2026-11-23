@@ -1,6 +1,6 @@
 # Automotive Platform Conversion
 
-**Status:** Planning only. No application code, schema, deployments, billing, or customer data changed.
+**Status:** Initial vehicle implementation committed to draft PR #1; automated, authenticated and browser acceptance remain unverified. No deployments, billing or customer data changes.
 
 ## Purpose
 
@@ -55,4 +55,4 @@ For each feature: inspect existing architecture, document dependencies, make a s
 
 ## Current milestone
 
-**Milestone 0:** Fork and automotive branch established; planning documents prepared. Actual feature development and verification have not yet occurred.
+**Milestone 1 in progress:** Vehicle schema and RLS, customer-linked vehicle form, archiving, client deletion guard and unit/database tests are committed. GitHub checks and real runtime verification are still required. Do not merge or deploy until evidence is reviewed.
